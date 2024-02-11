@@ -1,0 +1,185 @@
+{
+  "layer": "top", // Waybar at top layer
+  "position": "top", // Waybar position (top|bottom|left|right)
+  "exclusive": true,
+  "passthrough": false,
+  "gtk-layer-shell": true,
+  // "width": 1280, // Waybar width
+  // Choose the order of the modules
+  "modules-left": [
+    "hyprland/workspaces"
+  ],
+  "modules-center": [
+    "group/media",
+    "custom/playpause-media"
+  ],
+  "modules-right": [
+    "pulseaudio",
+    "pulseaudio#microphone",
+    "backlight",
+    "battery",
+    "clock",
+    "tray",
+    "custom/lock",
+    "custom/power"
+  ],
+  "hyprland/workspaces": {
+    "disable-scroll": true,
+    "sort-by-name": true,
+    "format": "{name} {icon} ",
+    "format-icons": {
+      "1": "",
+      "2": "",
+      "3": "",
+      "4": "",
+      "default": "",
+    },
+    "tooltip": true
+  },
+  "tray": {
+    "icon-size": 21,
+    "spacing": 10
+  },
+  "group/media": {
+    "orientation": "inherit",
+    "drawer": {
+      "transition-duration": 500,
+      "children-class": "group-medias",
+      "transition-left-to-right": true,
+    },
+    "modules": [
+      "image#playpause-media",
+      "custom/previous-media",
+      "custom/artist-media",
+      "custom/next-media",
+    ]
+  },
+  "image#playpause-media": {
+    "exec": "~/.config/waybar/script/media.sh --get-image",
+    "size": 24,
+    "interval": 5,
+    "on-click": "playerctl play-pause",
+  },
+  "custom/next-media": {
+    "format": "",
+    "on-click": "playerctl next"
+  },
+  "custom/artist-media": {
+    "format": "{}",
+    "exec": "playerctl -a metadata --format '{\"text\": \"{{artist}} - {{markup_escape(title)}}\", \"tooltip\": \"{{markup_escape(album)}}\", \"class\": \"{{status}}\"  }' -F",
+    "return-type": "json",
+    "on-click": "playerctl play-pause",
+    "max-length": 50,
+  },
+  "custom/previous-media": {
+    "format": "",
+    "on-click": "playerctl previous"
+  },
+  "custom/playpause-media": {
+    "format": "{icon}{}",
+    "return-type": "json",
+    "exec": "playerctl -a metadata --format '{\"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F",
+    "format-icons": {
+      "Paused": "",
+      "Stopped": "",
+      "Playing": "",
+    },
+    "on-click": "playerctl play-pause",
+  },
+  "custom/music": {
+    "format": "  {}",
+    "escape": true,
+    "interval": 5,
+    "tooltip": false,
+    "exec": "playerctl metadata mpris:artUrl",
+    "on-click": "playerctl play-pause",
+    "max-length": 50
+  },
+  "clock": {
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+    "format-alt": " {:%d/%m/%Y}",
+    "format": " <small>{:%I:%M %p}</small>"
+  },
+  "backlight": {
+    "format": "{icon}",
+    "format-alt-click": "click-right",
+    "format-alt": "{icon} {percent}%",
+    "format-icons": [
+      "󰃞",
+      "󰃟",
+      "󰃠"
+    ],
+    "on-scroll-up": "~/.config/waybar/script/brightness.sh --inc",
+    "on-scroll-down": "~/.config/waybar/script/brightness.sh --dec"
+  },
+  "battery": {
+    "states": {
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "<small>{icon}</small>",
+    "format-charging": "",
+    "format-plugged": "",
+    "format-alt": "{icon}",
+    "format-icons": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  "pulseaudio": {
+    "format": "{icon}",
+    "format-muted": "",
+    "on-click": "~/.config/waybar/script/volume.sh --toggle",
+    "on-click-right": "pavucontrol",
+    "on-scroll-up": "~/.config/waybar/script/volume.sh --inc",
+    "on-scroll-down": "~/.config/waybar/script/volume.sh --dec",
+    "scroll-step": 5,
+    "format-icons": {
+      "headphone": "",
+      "hands-free": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "default": [
+        "",
+        "",
+        ""
+      ]
+    },
+    "tooltip": true,
+    "tooltip-format": "{icon} at {volume}%"
+  },
+  "pulseaudio#microphone": {
+    "format": "{format_source}",
+    "format-source": "",
+    "format-source-muted": "",
+    "on-click": "~/.config/waybar/script/volume.sh --toggle-mic",
+    "on-click-right": "pavucontrol",
+    "on-scroll-up": "~/.config/waybar/script/volume.sh --mic-inc",
+    "on-scroll-down": "~/.config/waybar/script/volume.sh --mic-dec",
+    "scroll-step": 5,
+    "tooltip": true,
+    "tooltip-format": " at {volume}%"
+  },
+  "custom/lock": {
+    "tooltip": false,
+    "on-click": "sh -c '(sleep 0.5s; swaylock --grace 0)' & disown",
+    "format": "",
+  },
+  "custom/power": {
+    "tooltip": false,
+    "on-click": "wlogout &",
+    "format": "襤"
+  }
+}
