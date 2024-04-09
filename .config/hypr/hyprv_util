@@ -38,12 +38,6 @@ restart_waybar() {
     pkill waybar
     waybar & 
 
-    get_ver   
-
-    if [[ $VER == "v4" ]]; then
-        waybar --config ~/.config/HyprV/waybar/conf/v4-config-bottom.jsonc
-    fi
-
 }
 
 set_current_background() {
